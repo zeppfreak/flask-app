@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp-api
+  template:
+    metadata:
+      labels:
+        app: myapp-api
+    spec:
+      containers:
+      - name: myapp-api-container
+        image: gcr.io/ornate-course-263801/my-app-api
+        ports:
+        - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-api-service
+spec:
+  selector:
+    app: myapp-api
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8000
+  type: LoadBalancer
